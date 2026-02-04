@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OG Image - ATELIER</title>
+    <title>Generar OG Image - ATELIER</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400&display=swap" rel="stylesheet">
     <style>
         * {
@@ -13,148 +13,209 @@
         }
 
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             background: #1a1a1a;
-            padding: 2rem;
-        }
-
-        .og-card {
-            width: 1200px;
-            height: 630px;
-            background: #F2F0E9;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            position: relative;
-            overflow: hidden;
+            justify-content: center;
+            padding: 2rem;
+            font-family: 'Montserrat', sans-serif;
         }
 
-        /* Subtle texture */
-        .og-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        .logo {
-            height: 220px;
-            width: auto;
-            margin-bottom: 2rem;
-        }
-
-        .title {
+        h1 {
+            color: #F2F0E9;
             font-family: 'Playfair Display', serif;
-            font-size: 3rem;
             font-weight: 400;
-            color: #333333;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-        }
-
-        .subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #C78D76;
-            margin-bottom: 1.5rem;
-        }
-
-        .location {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            color: rgba(51, 51, 51, 0.6);
-        }
-
-        /* Decorative corners */
-        .corner {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 2px solid #A4B0A0;
-            opacity: 0.4;
-        }
-
-        .corner-tl {
-            top: 40px;
-            left: 40px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .corner-tr {
-            top: 40px;
-            right: 40px;
-            border-left: none;
-            border-bottom: none;
-        }
-
-        .corner-bl {
-            bottom: 40px;
-            left: 40px;
-            border-right: none;
-            border-top: none;
-        }
-
-        .corner-br {
-            bottom: 40px;
-            right: 40px;
-            border-left: none;
-            border-top: none;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
         }
 
         .instructions {
-            margin-top: 2rem;
             color: #888;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.875rem;
+            margin-bottom: 2rem;
             text-align: center;
+            font-size: 0.9rem;
             line-height: 1.6;
         }
 
-        .instructions strong {
-            color: #C78D76;
+        canvas {
+            border: 1px solid #333;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .download-btn {
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            background: #C78D76;
+            color: #F2F0E9;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #b37d68;
+            transform: translateY(-2px);
+        }
+
+        .status {
+            margin-top: 1rem;
+            color: #A4B0A0;
+            font-size: 0.85rem;
+        }
+
+        .preview-label {
+            color: #666;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div>
-        <div class="og-card">
-            <div class="corner corner-tl"></div>
-            <div class="corner corner-tr"></div>
-            <div class="corner corner-bl"></div>
-            <div class="corner corner-br"></div>
+    <h1>Generador de OG Image</h1>
+    <p class="instructions">
+        Esta herramienta genera una imagen PNG de 1200×630px<br>
+        perfecta para compartir en redes sociales.
+    </p>
 
-            <div class="content">
-                <img src="logo-bakery.svg" alt="ATELIER" class="logo">
-                <h1 class="title">Manual de Marca</h1>
-                <p class="subtitle">Repostería de Detalle</p>
-                <p class="location">Est. 2026 • Monterrey, MX</p>
-            </div>
-        </div>
+    <canvas id="ogCanvas" width="1200" height="630"></canvas>
+    <p class="preview-label">Vista previa (escala reducida)</p>
 
-        <p class="instructions">
-            <strong>Instrucciones:</strong><br>
-            1. Abre este archivo en tu navegador<br>
-            2. Toma una captura de pantalla del recuadro (1200×630px)<br>
-            3. Guárdala como <strong>og-image.png</strong> en la misma carpeta<br>
-            4. ¡Listo! Tu enlace ahora mostrará la imagen al compartir
-        </p>
-    </div>
+    <button class="download-btn" onclick="downloadImage()">Descargar og-image.png</button>
+    <p class="status" id="status">Listo para descargar</p>
+
+    <script>
+        // Wait for fonts to load
+        document.fonts.ready.then(() => {
+            generateImage();
+        });
+
+        function generateImage() {
+            const canvas = document.getElementById('ogCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#F2F0E9';
+            ctx.fillRect(0, 0, 1200, 630);
+
+            // Subtle noise texture (simulated with dots)
+            ctx.fillStyle = 'rgba(51, 51, 51, 0.02)';
+            for (let i = 0; i < 5000; i++) {
+                const x = Math.random() * 1200;
+                const y = Math.random() * 630;
+                ctx.fillRect(x, y, 1, 1);
+            }
+
+            // Decorative corners
+            ctx.strokeStyle = '#A4B0A0';
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.4;
+
+            // Top-left corner
+            ctx.beginPath();
+            ctx.moveTo(40, 120);
+            ctx.lineTo(40, 40);
+            ctx.lineTo(120, 40);
+            ctx.stroke();
+
+            // Top-right corner
+            ctx.beginPath();
+            ctx.moveTo(1080, 40);
+            ctx.lineTo(1160, 40);
+            ctx.lineTo(1160, 120);
+            ctx.stroke();
+
+            // Bottom-left corner
+            ctx.beginPath();
+            ctx.moveTo(40, 510);
+            ctx.lineTo(40, 590);
+            ctx.lineTo(120, 590);
+            ctx.stroke();
+
+            // Bottom-right corner
+            ctx.beginPath();
+            ctx.moveTo(1080, 590);
+            ctx.lineTo(1160, 590);
+            ctx.lineTo(1160, 510);
+            ctx.stroke();
+
+            ctx.globalAlpha = 1;
+
+            // Load and draw the logo
+            const logoImg = new Image();
+            logoImg.onload = function() {
+                // Calculate logo dimensions (height: 180px, maintain aspect ratio)
+                const logoHeight = 180;
+                const logoWidth = (logoImg.width / logoImg.height) * logoHeight;
+                const logoX = (1200 - logoWidth) / 2;
+                const logoY = 120;
+
+                ctx.drawImage(logoImg, logoX, logoY, logoWidth, logoHeight);
+
+                // Title: "Manual de Marca"
+                ctx.fillStyle = '#333333';
+                ctx.font = '400 48px "Playfair Display", serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Manual de Marca', 600, 370);
+
+                // Subtitle: "Repostería de Detalle"
+                ctx.fillStyle = '#C78D76';
+                ctx.font = '300 20px "Montserrat", sans-serif';
+                ctx.letterSpacing = '0.2em';
+                ctx.fillText('REPOSTERÍA DE DETALLE', 600, 420);
+
+                // Location
+                ctx.fillStyle = 'rgba(51, 51, 51, 0.5)';
+                ctx.font = '400 14px "Montserrat", sans-serif';
+                ctx.fillText('Est. 2026  •  Monterrey, MX', 600, 480);
+
+                document.getElementById('status').textContent = '✓ Imagen generada correctamente';
+            };
+
+            logoImg.onerror = function() {
+                // If logo doesn't load, draw text fallback
+                ctx.fillStyle = '#4d4c4d';
+                ctx.font = '400 72px "Playfair Display", serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('ATELIER.', 600, 220);
+
+                // Title
+                ctx.fillStyle = '#333333';
+                ctx.font = '400 48px "Playfair Display", serif';
+                ctx.fillText('Manual de Marca', 600, 370);
+
+                // Subtitle
+                ctx.fillStyle = '#C78D76';
+                ctx.font = '300 20px "Montserrat", sans-serif';
+                ctx.fillText('REPOSTERÍA DE DETALLE', 600, 420);
+
+                // Location
+                ctx.fillStyle = 'rgba(51, 51, 51, 0.5)';
+                ctx.font = '400 14px "Montserrat", sans-serif';
+                ctx.fillText('Est. 2026  •  Monterrey, MX', 600, 480);
+
+                document.getElementById('status').textContent = '⚠ Logo no encontrado, usando texto';
+            };
+
+            logoImg.src = 'logo-bakery.svg';
+        }
+
+        function downloadImage() {
+            const canvas = document.getElementById('ogCanvas');
+            const link = document.createElement('a');
+            link.download = 'og-image.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+            document.getElementById('status').textContent = '✓ Descarga iniciada';
+        }
+    </script>
 </body>
 </html>
