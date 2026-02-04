@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Image - ATELIER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            padding: 2rem;
+        }
+
+        .og-card {
+            width: 1200px;
+            height: 630px;
+            background: #F2F0E9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle texture */
+        .og-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .logo {
+            height: 220px;
+            width: auto;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: #333333;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C78D76;
+            margin-bottom: 1.5rem;
+        }
+
+        .location {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: rgba(51, 51, 51, 0.6);
+        }
+
+        /* Decorative corners */
+        .corner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #A4B0A0;
+            opacity: 0.4;
+        }
+
+        .corner-tl {
+            top: 40px;
+            left: 40px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .corner-tr {
+            top: 40px;
+            right: 40px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .corner-bl {
+            bottom: 40px;
+            left: 40px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .corner-br {
+            bottom: 40px;
+            right: 40px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .instructions {
+            margin-top: 2rem;
+            color: #888;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.875rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .instructions strong {
+            color: #C78D76;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="og-card">
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+
+            <div class="content">
+                <img src="logo-bakery.svg" alt="ATELIER" class="logo">
+                <h1 class="title">Manual de Marca</h1>
+                <p class="subtitle">Repostería de Detalle</p>
+                <p class="location">Est. 2026 • Monterrey, MX</p>
+            </div>
+        </div>
+
+        <p class="instructions">
+            <strong>Instrucciones:</strong><br>
+            1. Abre este archivo en tu navegador<br>
+            2. Toma una captura de pantalla del recuadro (1200×630px)<br>
+            3. Guárdala como <strong>og-image.png</strong> en la misma carpeta<br>
+            4. ¡Listo! Tu enlace ahora mostrará la imagen al compartir
+        </p>
+    </div>
+</body>
+</html>
