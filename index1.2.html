@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATELIER. — Repostería de Detalle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================
+           CSS VARIABLES — DESIGN SYSTEM
+        ======================================== */
+        :root {
+            --color-bone: #F2F0E9;
+            --color-charcoal: #333333;
+            --color-terracotta: #C78D76;
+            --color-sage: #A4B0A0;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --transition-smooth: 0.7s ease-out;
+        }
+
+        /* ========================================
+           RESET & BASE STYLES
+        ======================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-bone);
+            color: var(--color-charcoal);
+            line-height: 1.7;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: pageLoad 0.5s ease forwards;
+        }
+
+        @keyframes pageLoad {
+            to { opacity: 1; }
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+        }
+
+        /* ========================================
+           PREFERS REDUCED MOTION
+        ======================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html {
+                scroll-behavior: auto;
+            }
+            body {
+                opacity: 1;
+            }
+        }
+
+        /* ========================================
+           REUSABLE ANIMATION CLASSES
+        ======================================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           STICKY NAVIGATION
+        ======================================== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.4s ease;
+            pointer-events: none;
+        }
+
+        .nav.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            background-color: rgba(242, 240, 233, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-logo {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-dots {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-charcoal);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot:hover {
+            background-color: var(--color-terracotta);
+            border-color: var(--color-terracotta);
+        }
+
+        .nav-dot.active {
+            background-color: var(--color-charcoal);
+        }
+
+        .nav-dot::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: var(--color-charcoal);
+            color: var(--color-bone);
+            font-size: 0.625rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border-radius: 3px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .nav-dot:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ========================================
+           SECTION BASE STYLES
+        ======================================== */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        /* ========================================
+           SECTION 1: HERO
+        ======================================== */
+        #hero {
+            background-image: url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2065');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: -10%;
+            background-image: url('https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=2065');
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(242, 240, 233, 0.4) 0%,
+                rgba(242, 240, 233, 0.6) 50%,
+                rgba(242, 240, 233, 0.85) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(4rem, 15vw, 10rem);
+            letter-spacing: 0.08em;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: heroFadeUp 1.2s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hero-content .subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: heroFadeUp 1.2s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        .hero-content .micro {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-top: 2rem;
+            color: rgba(51, 51, 51, 0.7);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: heroFadeUp 1.2s ease forwards;
+            animation-delay: 0.9s;
+        }
+
+        @keyframes heroFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========================================
+           SECTION 2: ORIGIN (Split Screen)
+        ======================================== */
+        #origin {
+            background-color: var(--color-bone);
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .split-container {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .split-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) sepia(20%);
+        }
+
+        .split-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 6rem;
+        }
+
+        .split-text h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 2rem;
+        }
+
+        .split-text p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(51, 51, 51, 0.85);
+            max-width: 550px;
+        }
+
+        /* ========================================
+           SECTION 3: STRATEGY (Values Cards)
+        ======================================== */
+        #strategy {
+            background-color: var(--color-sage);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .value-card {
+            background: rgba(242, 240, 233, 0.9);
+            min-height: 280px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            inset: 0;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .card-front {
+            z-index: 2;
+            background: rgba(242, 240, 233, 0.9);
+        }
+
+        .card-front h3 {
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .card-front h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 2px;
+            background: var(--color-terracotta);
+        }
+
+        .card-back {
+            background: var(--color-charcoal);
+            color: var(--color-bone);
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .card-back p {
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 280px;
+        }
+
+        .value-card:hover .card-front,
+        .value-card:focus .card-front,
+        .value-card.active .card-front {
+            opacity: 0;
+        }
+
+        .value-card:hover .card-back,
+        .value-card:focus .card-back,
+        .value-card.active .card-back {
+            opacity: 1;
+            z-index: 3;
+        }
+
+        /* Staggered animation delays */
+        .value-card:nth-child(1) { transition-delay: 0s; }
+        .value-card:nth-child(2) { transition-delay: 0.1s; }
+        .value-card:nth-child(3) { transition-delay: 0.2s; }
+        .value-card:nth-child(4) { transition-delay: 0.3s; }
+
+        /* ========================================
+           SECTION 4: PERSONALITY (Archetype)
+        ======================================== */
+        #personality {
+            background-color: var(--color-bone);
+            position: relative;
+        }
+
+        /* Subtle paper texture */
+        #personality::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .personality-content {
+            max-width: 700px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .personality-content h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 2rem;
+        }
+
+        .personality-content > p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: rgba(51, 51, 51, 0.85);
+            margin-bottom: 3rem;
+        }
+
+        .quote-block {
+            position: relative;
+            padding: 2rem 3rem;
+            margin-top: 2rem;
+        }
+
+        .quote-block::before,
+        .quote-block::after {
+            font-family: var(--font-heading);
+            font-size: 6rem;
+            color: var(--color-terracotta);
+            opacity: 0.6;
+            position: absolute;
+            line-height: 1;
+        }
+
+        .quote-block::before {
+            content: '"';
+            top: -1rem;
+            left: 0;
+        }
+
+        .quote-block::after {
+            content: '"';
+            bottom: -2rem;
+            right: 0;
+        }
+
+        .quote-block p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--color-charcoal);
+        }
+
+        /* ========================================
+           SECTION 5: VISUAL IDENTITY
+        ======================================== */
+        #identity {
+            background-color: var(--color-sage);
+            padding: 6rem 2rem;
+        }
+
+        .identity-content {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* Logo Showcase */
+        .logo-showcase {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .logo-main {
+            height: 180px;
+            width: auto;
+            margin: 0 auto 1.5rem;
+        }
+
+        .logo-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(51, 51, 51, 0.7);
+        }
+
+        .logo-secondary {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 2rem 3rem;
+            border: 1px dashed rgba(51, 51, 51, 0.3);
+            color: rgba(51, 51, 51, 0.5);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Typography Showcase */
+        .typography-showcase {
+            margin-bottom: 5rem;
+        }
+
+        .typography-showcase h3 {
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
+
+        .type-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .type-sample {
+            background: rgba(242, 240, 233, 0.5);
+            padding: 2.5rem 2rem;
+        }
+
+        .type-sample .sample-text {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .type-sample.primary .sample-text {
+            font-family: var(--font-heading);
+        }
+
+        .type-sample.secondary .sample-text {
+            font-family: var(--font-body);
+            font-weight: 300;
+        }
+
+        .type-sample .type-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(51, 51, 51, 0.6);
+            padding-top: 1rem;
+            border-top: 1px solid rgba(51, 51, 51, 0.1);
+        }
+
+        .type-sample .font-name {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Color Palette */
+        .color-showcase h3 {
+            text-align: center;
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            font-family: var(--font-body);
+            font-weight: 500;
+        }
+
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .color-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-swatch:hover .color-circle {
+            transform: scale(1.1);
+        }
+
+        .color-circle.pulse {
+            animation: pulse 0.4s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .color-swatch .color-name {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .color-swatch .hex {
+            margin-top: 0.25rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            color: rgba(51, 51, 51, 0.6);
+        }
+
+        .copied-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--color-charcoal);
+            color: var(--color-bone);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .copied-indicator.show {
+            opacity: 1;
+        }
+
+        /* ========================================
+           SECTION 6: PRODUCT UNIVERSE (Gallery)
+        ======================================== */
+        #products {
+            background-color: var(--color-bone);
+            padding: 6rem 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 280px;
+            gap: 1.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(to top, rgba(51, 51, 51, 0.85), transparent);
+            color: var(--color-bone);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-caption p {
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            line-height: 1.5;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           SECTION 7: FOOTER
+        ======================================== */
+        #footer {
+            background-color: var(--color-charcoal);
+            color: var(--color-bone);
+            min-height: auto;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+        }
+
+        .footer-tagline {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+        }
+
+        .footer-credit {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            color: rgba(242, 240, 233, 0.6);
+            margin-bottom: 2.5rem;
+        }
+
+        .scroll-top {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(242, 240, 233, 0.3);
+            border-radius: 50%;
+            color: var(--color-bone);
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .scroll-top:hover {
+            background: var(--color-bone);
+            color: var(--color-charcoal);
+            border-color: var(--color-bone);
+        }
+
+        /* ========================================
+           LIGHTBOX
+        ======================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(51, 51, 51, 0.95);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            color: var(--color-bone);
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            margin-top: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 45px;
+            height: 45px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            z-index: 2001;
+        }
+
+        .lightbox-close::before,
+        .lightbox-close::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 2px;
+            background: var(--color-bone);
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-close::before {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .lightbox-close::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .lightbox-close:hover::before,
+        .lightbox-close:hover::after {
+            background: var(--color-terracotta);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--color-bone);
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--color-bone);
+        }
+
+        .lightbox-nav::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid var(--color-bone);
+            border-right: 2px solid var(--color-bone);
+            transition: border-color 0.3s ease;
+        }
+
+        .lightbox-nav:hover::before {
+            border-color: var(--color-charcoal);
+        }
+
+        .lightbox-prev {
+            left: 2rem;
+        }
+
+        .lightbox-prev::before {
+            transform: rotate(-135deg);
+            margin-left: 5px;
+        }
+
+        .lightbox-next {
+            right: 2rem;
+        }
+
+        .lightbox-next::before {
+            transform: rotate(45deg);
+            margin-right: 5px;
+        }
+
+        /* ========================================
+           RESPONSIVE DESIGN
+        ======================================== */
+        @media (max-width: 1024px) {
+            .split-container {
+                grid-template-columns: 1fr;
+            }
+
+            .split-image {
+                height: 50vh;
+            }
+
+            .split-text {
+                padding: 3rem 2rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .gallery-item:nth-child(1) {
+                grid-row: span 1;
+            }
+
+            .gallery-item:nth-child(4) {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-logo {
+                height: 40px;
+            }
+
+            .nav-dots {
+                gap: 0.5rem;
+            }
+
+            .nav-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .nav-dot::after {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .split-text {
+                padding: 3rem 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .value-card {
+                min-height: 220px;
+            }
+
+            .quote-block {
+                padding: 1.5rem 1rem;
+            }
+
+            .quote-block::before,
+            .quote-block::after {
+                font-size: 4rem;
+            }
+
+            .type-comparison {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .color-palette {
+                gap: 1.5rem;
+            }
+
+            .color-circle {
+                width: 65px;
+                height: 65px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 300px;
+            }
+
+            .gallery-caption {
+                transform: translateY(0);
+                background: linear-gradient(to top, rgba(51, 51, 51, 0.7), transparent);
+            }
+
+            .lightbox-nav {
+                width: 40px;
+                height: 40px;
+            }
+
+            .lightbox-prev {
+                left: 1rem;
+            }
+
+            .lightbox-next {
+                right: 1rem;
+            }
+
+            .logo-main {
+                height: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        /* Parallax fallback for mobile/touch */
+        @media (max-width: 768px), (hover: none) {
+            .hero-bg {
+                inset: 0;
+            }
+        }
+
+        /* Focus states for accessibility */
+        .nav-dot:focus,
+        .scroll-top:focus,
+        .lightbox-close:focus,
+        .lightbox-nav:focus,
+        .color-swatch:focus {
+            outline: 2px solid var(--color-terracotta);
+            outline-offset: 2px;
+        }
+
+        .value-card:focus {
+            outline: 2px solid var(--color-terracotta);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" aria-label="Main navigation">
+        <img src="logo-bakery.svg" alt="ATELIER" class="nav-logo">
+        <div class="nav-dots">
+            <button class="nav-dot" data-section="hero" data-tooltip="Inicio" aria-label="Ir a Inicio"></button>
+            <button class="nav-dot" data-section="origin" data-tooltip="Origen" aria-label="Ir a Origen"></button>
+            <button class="nav-dot" data-section="strategy" data-tooltip="Estrategia" aria-label="Ir a Estrategia"></button>
+            <button class="nav-dot" data-section="personality" data-tooltip="Personalidad" aria-label="Ir a Personalidad"></button>
+            <button class="nav-dot" data-section="identity" data-tooltip="Identidad" aria-label="Ir a Identidad"></button>
+            <button class="nav-dot" data-section="products" data-tooltip="Productos" aria-label="Ir a Productos"></button>
+            <button class="nav-dot" data-section="footer" data-tooltip="Contacto" aria-label="Ir a Contacto"></button>
+        </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <section id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>ATELIER.</h1>
+            <p class="subtitle">Repostería de Detalle.</p>
+            <p class="micro">Est. 2026 • Monterrey.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 2: ORIGIN -->
+    <section id="origin">
+        <div class="split-container">
+            <div class="split-image">
+                <img src="https://images.unsplash.com/photo-1517433367423-c7e5b0f35086?q=80&w=1200" alt="Manos trabajando masa artesanal">
+            </div>
+            <div class="split-text">
+                <h2 class="fade-up">Todo empieza con una receta.</h2>
+                <p class="fade-up">Lo que nació observando a mi madre hacer su mostachón, se convirtió en mi refugio. Encontré en la repostería la paz que da la precisión. No es solo cocinar; es un momento de conexión. Hoy, ATELIER es la evolución de esa herencia: perfeccionismo técnico con alma artesanal.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: STRATEGY -->
+    <section id="strategy">
+        <h2 class="section-title fade-up">Nuestros No Negociables.</h2>
+        <div class="cards-grid">
+            <article class="value-card fade-up" tabindex="0">
+                <div class="card-front">
+                    <h3>Calidad Radical.</h3>
+                </div>
+                <div class="card-back">
+                    <p>Si no es perfecto, no sale del taller. Preferimos no vender a vender algo a medias.</p>
+                </div>
+            </article>
+            <article class="value-card fade-up" tabindex="0">
+                <div class="card-front">
+                    <h3>Estética Silenciosa.</h3>
+                </div>
+                <div class="card-back">
+                    <p>El amor entra por los ojos. El montaje es nuestra firma de autor.</p>
+                </div>
+            </article>
+            <article class="value-card fade-up" tabindex="0">
+                <div class="card-front">
+                    <h3>Honestidad.</h3>
+                </div>
+                <div class="card-back">
+                    <p>Prometemos solo lo que podemos cumplir. Transparencia absoluta en ingredientes y procesos.</p>
+                </div>
+            </article>
+            <article class="value-card fade-up" tabindex="0">
+                <div class="card-front">
+                    <h3>El Proceso es Sagrado.</h3>
+                </div>
+                <div class="card-back">
+                    <p>La limpieza y el orden no se negocian. La repostería es disciplina y respeto.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- SECTION 4: PERSONALITY -->
+    <section id="personality">
+        <div class="personality-content">
+            <h2 class="fade-up">El Creador Intimista.</h2>
+            <p class="fade-up">Somos como esa anfitriona impecable que habla en voz baja, pero todos callan para escucharla. No gritamos para vender. Somos elegantes, sofisticados, pero con un guiño de calidez humana.</p>
+            <blockquote class="quote-block fade-up">
+                <p>"Dicen que la perfección no existe, pero tal vez no han probado nuestro equilibrio de texturas. Un pequeño capricho para su martes. (O miércoles, nadie lleva la cuenta)."</p>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- SECTION 5: VISUAL IDENTITY -->
+    <section id="identity">
+        <div class="identity-content">
+            <h2 class="section-title fade-up">Identidad Visual.</h2>
+
+            <!-- Logo Showcase -->
+            <div class="logo-showcase fade-up">
+                <img src="logo-bakery.svg" alt="ATELIER Logo Principal" class="logo-main">
+                <p class="logo-label">Logotipo Principal</p>
+                <div class="logo-secondary">Isotipo (próximamente)</div>
+            </div>
+
+            <!-- Typography Showcase -->
+            <div class="typography-showcase fade-up">
+                <h3>Tipografía</h3>
+                <div class="type-comparison">
+                    <div class="type-sample primary">
+                        <p class="sample-text">La perfección está en los detalles</p>
+                        <p class="type-label">Títulos</p>
+                        <p class="font-name">Playfair Display</p>
+                    </div>
+                    <div class="type-sample secondary">
+                        <p class="sample-text">La perfección está en los detalles</p>
+                        <p class="type-label">Cuerpo de texto</p>
+                        <p class="font-name">Montserrat</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Palette -->
+            <div class="color-showcase fade-up">
+                <h3>Paleta de Color</h3>
+                <div class="color-palette">
+                    <div class="color-swatch" data-color="#F2F0E9" tabindex="0">
+                        <div class="color-circle" style="background-color: #F2F0E9;"></div>
+                        <span class="color-name">Crema Hueso</span>
+                        <span class="hex">#F2F0E9</span>
+                        <span class="copied-indicator">¡Copiado!</span>
+                    </div>
+                    <div class="color-swatch" data-color="#333333" tabindex="0">
+                        <div class="color-circle" style="background-color: #333333;"></div>
+                        <span class="color-name">Carbón Suave</span>
+                        <span class="hex">#333333</span>
+                        <span class="copied-indicator">¡Copiado!</span>
+                    </div>
+                    <div class="color-swatch" data-color="#C78D76" tabindex="0">
+                        <div class="color-circle" style="background-color: #C78D76;"></div>
+                        <span class="color-name">Terracota</span>
+                        <span class="hex">#C78D76</span>
+                        <span class="copied-indicator">¡Copiado!</span>
+                    </div>
+                    <div class="color-swatch" data-color="#A4B0A0" tabindex="0">
+                        <div class="color-circle" style="background-color: #A4B0A0;"></div>
+                        <span class="color-name">Salvia</span>
+                        <span class="hex">#A4B0A0</span>
+                        <span class="copied-indicator">¡Copiado!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 6: PRODUCT UNIVERSE -->
+    <section id="products">
+        <h2 class="section-title fade-up">El Universo Atelier.</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item fade-up" data-caption="El Protagonista. Equilibrio dulce y ácido.">
+                <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=1200" alt="Tarta gourmet con equilibrio dulce y ácido">
+                <div class="gallery-caption">
+                    <p>El Protagonista. Equilibrio dulce y ácido.</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up" data-caption="Unboxing: Un regalo para uno mismo.">
+                <img src="https://images.unsplash.com/photo-1607478900766-efe13248b125?q=80&w=1200" alt="Empaque elegante de repostería">
+                <div class="gallery-caption">
+                    <p>Unboxing: Un regalo para uno mismo.</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up" data-caption="Indulgencia Moderna.">
+                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200" alt="Galletas chunky de chocolate">
+                <div class="gallery-caption">
+                    <p>Indulgencia Moderna.</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up" data-caption="Sofisticación Rústica.">
+                <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?q=80&w=1200" alt="Pay rústico artesanal">
+                <div class="gallery-caption">
+                    <p>Sofisticación Rústica.</p>
+                </div>
+            </div>
+            <div class="gallery-item fade-up" data-caption="Para quien busca belleza, no solo azúcar.">
+                <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1200" alt="Estética de café y repostería">
+                <div class="gallery-caption">
+                    <p>Para quien busca belleza, no solo azúcar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 7: FOOTER -->
+    <footer id="footer">
+        <div class="footer-content">
+            <p class="footer-tagline">Listo para hornear ideas.</p>
+            <p class="footer-credit">Proyecto de Branding 2026</p>
+            <button class="scroll-top" aria-label="Volver al inicio">↑</button>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" aria-hidden="true">
+        <button class="lightbox-close" aria-label="Cerrar"></button>
+        <button class="lightbox-nav lightbox-prev" aria-label="Imagen anterior"></button>
+        <button class="lightbox-nav lightbox-next" aria-label="Siguiente imagen"></button>
+        <div class="lightbox-content">
+            <img src="" alt="">
+            <div class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========================================
+        // NAVIGATION VISIBILITY
+        // ========================================
+        const nav = document.querySelector('.nav');
+        const hero = document.getElementById('hero');
+
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    nav.classList.remove('visible');
+                } else {
+                    nav.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        navObserver.observe(hero);
+
+        // ========================================
+        // NAVIGATION DOT INDICATORS
+        // ========================================
+        const sections = document.querySelectorAll('section, footer');
+        const navDots = document.querySelectorAll('.nav-dot');
+
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    navDots.forEach(dot => {
+                        dot.classList.toggle('active', dot.dataset.section === sectionId);
+                    });
+                }
+            });
+        }, { threshold: 0.4 });
+
+        sections.forEach(section => sectionObserver.observe(section));
+
+        // Navigation dot click handlers
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionId = dot.dataset.section;
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ========================================
+        // PARALLAX EFFECT
+        // ========================================
+        const heroBg = document.querySelector('.hero-bg');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const isMobile = window.matchMedia('(max-width: 768px), (hover: none)').matches;
+
+        if (!prefersReducedMotion && !isMobile) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const heroHeight = hero.offsetHeight;
+
+                if (scrolled < heroHeight) {
+                    heroBg.style.transform = `translateY(${scrolled * 0.35}px)`;
+                }
+            }, { passive: true });
+        }
+
+        // ========================================
+        // SCROLL ANIMATIONS (Intersection Observer)
+        // ========================================
+        const animatedElements = document.querySelectorAll('.fade-up');
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        animatedElements.forEach(el => animationObserver.observe(el));
+
+        // ========================================
+        // COLOR PALETTE COPY TO CLIPBOARD
+        // ========================================
+        const colorSwatches = document.querySelectorAll('.color-swatch');
+
+        colorSwatches.forEach(swatch => {
+            const copyColor = async () => {
+                const color = swatch.dataset.color;
+                const circle = swatch.querySelector('.color-circle');
+                const indicator = swatch.querySelector('.copied-indicator');
+
+                try {
+                    await navigator.clipboard.writeText(color);
+
+                    // Pulse animation
+                    circle.classList.add('pulse');
+                    setTimeout(() => circle.classList.remove('pulse'), 400);
+
+                    // Show copied indicator
+                    indicator.classList.add('show');
+                    setTimeout(() => indicator.classList.remove('show'), 1500);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            };
+
+            swatch.addEventListener('click', copyColor);
+            swatch.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    copyColor();
+                }
+            });
+        });
+
+        // ========================================
+        // LIGHTBOX
+        // ========================================
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImg = lightbox.querySelector('img');
+        const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        const lightboxPrev = lightbox.querySelector('.lightbox-prev');
+        const lightboxNext = lightbox.querySelector('.lightbox-next');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            const item = galleryItems[index];
+            const img = item.querySelector('img');
+            const caption = item.dataset.caption;
+
+            lightboxImg.src = img.src;
+            lightboxImg.alt = caption;
+            lightboxCaption.textContent = caption;
+            lightbox.classList.add('active');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            currentIndex = (currentIndex + direction + galleryItems.length) % galleryItems.length;
+            openLightbox(currentIndex);
+        }
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => openLightbox(index));
+        });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
+        lightboxNext.addEventListener('click', () => navigateLightbox(1));
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+
+            switch (e.key) {
+                case 'Escape':
+                    closeLightbox();
+                    break;
+                case 'ArrowLeft':
+                    navigateLightbox(-1);
+                    break;
+                case 'ArrowRight':
+                    navigateLightbox(1);
+                    break;
+            }
+        });
+
+        // ========================================
+        // SCROLL TO TOP
+        // ========================================
+        const scrollTopBtn = document.querySelector('.scroll-top');
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ========================================
+        // VALUE CARDS KEYBOARD SUPPORT
+        // ========================================
+        const valueCards = document.querySelectorAll('.value-card');
+
+        valueCards.forEach(card => {
+            card.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.classList.toggle('active');
+                }
+            });
+
+            card.addEventListener('focus', () => {
+                card.classList.add('active');
+            });
+
+            card.addEventListener('blur', () => {
+                card.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
